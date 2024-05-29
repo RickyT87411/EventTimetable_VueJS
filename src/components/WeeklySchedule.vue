@@ -1,30 +1,51 @@
 <template>
-  <div class="mx-auto text-center p-4 ">
+  <div class="mx-auto text-center p-4">
     <div class="sticky-container">
       <h1 class="text-3xl font-semibold mb-4">Weekly Schedule</h1>
-      <p class="text-sm text-gray-500 mb-2">*All included for in-house guests.</p>
+      <p class="text-sm text-gray-500 mb-2">
+        *All included for in-house guests.
+      </p>
       <p class="text-lg mb-16">Advanced booking is required.</p>
       <div class="overflow-x-auto">
         <div class="schedule-grid">
-          <div class="p-6 border border-gray-300 border-x-0 border-t-0 time-slot"></div>
-          <div v-for="day in days" :key="day" class="p-6 border border-gray-300 border-r-0 border-y-0 day">{{ day }}</div>
+          <div
+            class="p-6 border border-gray-300 border-x-0 border-t-0 time-slot"
+          ></div>
+          <div
+            v-for="day in days"
+            :key="day"
+            class="p-6 border border-gray-300 border-r-0 border-y-0 day"
+          >
+            {{ day }}
+          </div>
           <div v-for="time in timeSlots" :key="time" class="grid-row">
-            <div class="pt-8 border border-gray-300 time-slot border-x-0 border-t-0 align-middle opacity-100">{{ formatTime(time) }}</div>
-            <div v-for="day in days" :key="day + time" class="relative p-2 h-20 border border-gray-300 border-r-0 border-b-0">
-              <h4 v-if="getActivity(day, time)" class="m-auto p-1 custom-width" :style="getEventStyle(getActivity(day, time), time)">
+            <div
+              class="pt-8 border border-gray-300 time-slot border-x-0 border-t-0 align-middle opacity-100"
+            >
+              {{ formatTime(time) }}
+            </div>
+            <div
+              v-for="day in days"
+              :key="day + time"
+              class="relative p-2 h-20 border border-gray-300 border-r-0 border-b-0"
+            >
+              <h4
+                v-if="getActivity(day, time)"
+                class="m-auto text-left text-sm p-1 custom-width"
+                :style="getEventStyle(getActivity(day, time), day, time)"
+              >
                 {{ getActivity(day, time).name }}
               </h4>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "WeeklySchedule",
@@ -36,8 +57,8 @@ export default defineComponent({
         times: [
           { day: "Monday", startTime: 7, endTime: 7.5 },
           { day: "Wednesday", startTime: 7, endTime: 7.5 },
-          { day: "Friday", startTime: 7, endTime: 7.5 }
-        ]
+          { day: "Friday", startTime: 7, endTime: 7.5 },
+        ],
       },
       {
         name: "Morning Yoga",
@@ -47,8 +68,8 @@ export default defineComponent({
           { day: "Tuesday", startTime: 9, endTime: 10 },
           { day: "Wednesday", startTime: 9, endTime: 10 },
           { day: "Thursday", startTime: 9, endTime: 10 },
-          { day: "Friday", startTime: 9, endTime: 10 }
-        ]
+          { day: "Friday", startTime: 9, endTime: 10 },
+        ],
       },
       {
         name: "Aqua Stretching",
@@ -56,8 +77,8 @@ export default defineComponent({
         times: [
           { day: "Monday", startTime: 10.5, endTime: 11.25 },
           { day: "Wednesday", startTime: 10.5, endTime: 11.25 },
-          { day: "Friday", startTime: 10.5, endTime: 11.25 }
-        ]
+          { day: "Friday", startTime: 10.5, endTime: 11.25 },
+        ],
       },
       {
         name: "Balinese Offerings",
@@ -66,8 +87,8 @@ export default defineComponent({
           { day: "Monday", startTime: 11, endTime: 14 },
           { day: "Tuesday", startTime: 11, endTime: 14 },
           { day: "Wednesday", startTime: 11, endTime: 14 },
-          { day: "Friday", startTime: 11, endTime: 14 }
-        ]
+          { day: "Friday", startTime: 11, endTime: 14 },
+        ],
       },
       {
         name: "Sounds Healing",
@@ -79,8 +100,8 @@ export default defineComponent({
           { day: "Thursday", startTime: 14, endTime: 15.2 },
           { day: "Friday", startTime: 14, endTime: 15.2 },
           { day: "Saturday", startTime: 14, endTime: 15.2 },
-          { day: "Sunday", startTime: 14, endTime: 15.2 }
-        ]
+          { day: "Sunday", startTime: 14, endTime: 15.2 },
+        ],
       },
       {
         name: "Sunset Yoga",
@@ -90,8 +111,8 @@ export default defineComponent({
           { day: "Wednesday", startTime: 18, endTime: 19 },
           { day: "Thursday", startTime: 18, endTime: 19 },
           { day: "Friday", startTime: 18, endTime: 19 },
-          { day: "Saturday", startTime: 18, endTime: 19 }
-        ]
+          { day: "Saturday", startTime: 18, endTime: 19 },
+        ],
       },
       {
         name: "Alu Trekking",
@@ -99,17 +120,17 @@ export default defineComponent({
         times: [
           { day: "Tuesday", startTime: 10.5, endTime: 14 },
           { day: "Thursday", startTime: 10.5, endTime: 14 },
-          { day: "Saturday", startTime: 10.5, endTime: 14 }
-        ]
-      }
+          { day: "Saturday", startTime: 10.5, endTime: 14 },
+        ],
+      },
     ];
 
     const generateTimeSlots = (activities) => {
       const timeSlotSet = new Set();
-      activities.forEach(activity => {
-        activity.times.forEach(time => {
+      activities.forEach((activity) => {
+        activity.times.forEach((time) => {
           timeSlotSet.add(Math.floor(time.startTime));
-          if ((time.endTime - time.startTime) > 1) {
+          if (time.endTime - time.startTime > 1) {
             timeSlotSet.add(Math.floor(time.endTime));
           }
         });
@@ -118,13 +139,23 @@ export default defineComponent({
     };
 
     const data = {
-      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      timeSlots: generateTimeSlots(activities)
+      days: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      timeSlots: generateTimeSlots(activities),
     };
 
     const getActivity = (day, time) => {
-      return activities.find(activity =>
-        activity.times.some(slot => slot.day === day && Math.floor(slot.startTime) === time)
+      return activities.find((activity) =>
+        activity.times.some(
+          (slot) => slot.day === day && Math.floor(slot.startTime) === time
+        )
       );
     };
 
@@ -135,14 +166,13 @@ export default defineComponent({
         const startIndex = timeSlots.indexOf(Math.floor(startTime));
         const endIndex = timeSlots.indexOf(Math.floor(endTime));
 
-        if(Number.isInteger(startTime) === true) {
+        if (Number.isInteger(startTime) === true) {
           height = `${(endIndex - startIndex) * 4}rem`;
         } else {
-          height = `${((endIndex - (startIndex+1)) + (startTime % 1))* 4 + 1}rem`;
+          height = `${
+            (endIndex - (startIndex + 1) + (startTime % 1)) * 4 + 1
+          }rem`;
         }
-      }
-      else if (duration >= 1 && duration < 2) {
-        height = `${duration * 4}rem`;
       } else {
         height = `${duration * 4}rem`;
       }
@@ -157,25 +187,44 @@ export default defineComponent({
       return { height, marginTop: `${startPos}rem` };
     };
 
-    const getEventStyle = (activity, time) => {
-      const activityTime = activity.times.find(slot => Math.floor(slot.startTime) === time);
+    const getEventStyle = (activity, day, time) => {
+      const activityTime = activity.times.find(
+        (slot) => slot.day === day && Math.floor(slot.startTime) === time
+      );
       if (activityTime) {
-        const { startTime, endTime, day } = activityTime;
-        const { height, marginTop } = calculateHeightAndPosition(startTime, endTime, data.timeSlots);
-
-        const overlappingActivities = activities.filter(a =>
-          a.times.some(t => t.day === day && t.startTime < endTime && t.endTime > startTime)
+        const { startTime, endTime } = activityTime;
+        const { height, marginTop } = calculateHeightAndPosition(
+          startTime,
+          endTime,
+          data.timeSlots
         );
 
-        const totalActivities = overlappingActivities.length;
-        const index = overlappingActivities.findIndex(a => a.name === activity.name);
+        const overlappingActivities = activities
+          .filter((a) =>
+            a.times.some(
+              (t) =>
+                t.day === day && t.startTime < endTime && t.endTime > startTime
+            )
+          )
+          .sort(
+            (a, b) =>
+              a.times.find((t) => t.day === day).startTime -
+              b.times.find((t) => t.day === day).startTime
+          );
 
-        let width = '90%';
-        let left = '5%';
+        const totalActivities = overlappingActivities.length;
+        const index = overlappingActivities.findIndex(
+          (a) => a.name === activity.name
+        );
+
+        let width = "90%";
+        let left = "5%";
 
         if (totalActivities > 1) {
-          width = `${90 / totalActivities}%`;
-          left = `${5 + index * (90 / totalActivities)}%`;
+          width = `${80 / totalActivities}%`;
+          left = `${
+            5 + (totalActivities - 1 - index) * (90 / totalActivities)
+          }%`;
         }
 
         return {
@@ -183,7 +232,7 @@ export default defineComponent({
           height,
           marginTop,
           width,
-          left
+          left,
         };
       }
       return {};
@@ -191,20 +240,18 @@ export default defineComponent({
 
     const formatTime = (time) => {
       const hour = Math.floor(time);
-      const suffix = hour >= 12 ? 'PM' : 'AM';
+      const suffix = hour >= 12 ? "PM" : "AM";
       const formattedHour = hour % 12 || 12;
-      // const minutes = (time % 1) * 60;
-      // const formattedMinutes = minutes === 0 ? '00' : minutes;
-      return `${formattedHour}:${suffix}`;
+      return `${formattedHour} ${suffix}`;
     };
 
     return {
       ...data,
       getActivity,
       getEventStyle,
-      formatTime
+      formatTime,
     };
-  }
+  },
 });
 </script>
 
@@ -228,14 +275,15 @@ export default defineComponent({
   width: 1440px;
 }
 
-.schedule-grid > .grid-row:last-child .activity-cell, .schedule-grid > .grid-row:last-child .time-slot {
+.schedule-grid > .grid-row:last-child .activity-cell,
+.schedule-grid > .grid-row:last-child .time-slot {
   border-bottom: none;
 }
 
 .time-slot {
   letter-spacing: 0.7px;
-  color: #AD8C48;
-  background-color: #EFEBE2;
+  color: #ad8c48;
+  background-color: #efebe2;
   position: sticky;
   left: 0;
   z-index: 10;
@@ -244,8 +292,8 @@ export default defineComponent({
 .day {
   font: normal normal medium 14px/1px Basis Grotesque Arabic Pro;
   letter-spacing: 0px;
-  color: #AD8C48;
-  background-color: #EFEBE2;
+  color: #ad8c48;
+  background-color: #efebe2;
   border-bottom: 1px solid rgba(173, 140, 72, 0.5);
 }
 
@@ -267,19 +315,11 @@ h4 {
 h1 {
   font: normal normal normal 40px/50px Americana;
   letter-spacing: 0px;
-  color: #AD8C48;
+  color: #ad8c48;
   opacity: 1;
 }
 
 .border-gray-300 {
   border-color: rgba(173, 140, 72, 0.5);
 }
-
-/* @media screen and (max-width: 1440px) {
-  .sticky-container {
-    width: 1440px;
-    position: sticky;
-    left: 0;
-  }
-} */
 </style>
