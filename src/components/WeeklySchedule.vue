@@ -1,21 +1,24 @@
 <template>
-  <div class="mx-auto text-center p-4 sticky w-10/12 container">
-    <h1 class="text-3xl font-semibold mb-4">Weekly Schedule</h1>
-    <p class="text-sm text-gray-500 mb-2">*All included for in-house guests.</p>
-    <p class="text-lg mb-16">Advanced booking is required.</p>
-    <div class="overflow-x-auto">
-      <div class="schedule-grid">
-        <div class="p-6 border border-gray-300 border-x-0 border-t-0 time-slot"></div>
-        <div v-for="day in days" :key="day" class="p-6 border border-gray-300 border-r-0 border-y-0 day">{{ day }}</div>
-        <div v-for="time in timeSlots" :key="time" class="grid-row">
-          <div class="pt-8 border border-gray-300 time-slot border-x-0 border-t-0 align-middle opacity-100">{{ formatTime(time) }}</div>
-          <div v-for="day in days" :key="day + time" class="relative p-2 h-20 border border-gray-300 border-r-0 border-b-0">
-            <h4 v-if="getActivity(day, time)" class="m-auto p-1 custom-width" :style="getEventStyle(getActivity(day, time), time)">
-              {{ getActivity(day, time).name }}
-            </h4>
+  <div class="mx-auto text-center p-4 ">
+    <div class="sticky-container">
+      <h1 class="text-3xl font-semibold mb-4">Weekly Schedule</h1>
+      <p class="text-sm text-gray-500 mb-2">*All included for in-house guests.</p>
+      <p class="text-lg mb-16">Advanced booking is required.</p>
+      <div class="overflow-x-auto">
+        <div class="schedule-grid">
+          <div class="p-6 border border-gray-300 border-x-0 border-t-0 time-slot"></div>
+          <div v-for="day in days" :key="day" class="p-6 border border-gray-300 border-r-0 border-y-0 day">{{ day }}</div>
+          <div v-for="time in timeSlots" :key="time" class="grid-row">
+            <div class="pt-8 border border-gray-300 time-slot border-x-0 border-t-0 align-middle opacity-100">{{ formatTime(time) }}</div>
+            <div v-for="day in days" :key="day + time" class="relative p-2 h-20 border border-gray-300 border-r-0 border-b-0">
+              <h4 v-if="getActivity(day, time)" class="m-auto p-1 custom-width" :style="getEventStyle(getActivity(day, time), time)">
+                {{ getActivity(day, time).name }}
+              </h4>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -210,10 +213,19 @@ export default defineComponent({
   z-index: 9;
 }
 
+.sticky-container {
+  position: sticky;
+  left: 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  top: 0;
+}
+
 .schedule-grid {
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   gap: 0;
+  width: 1440px;
 }
 
 .schedule-grid > .grid-row:last-child .activity-cell, .schedule-grid > .grid-row:last-child .time-slot {
@@ -263,9 +275,11 @@ h1 {
   border-color: rgba(173, 140, 72, 0.5);
 }
 
-@media only screen and (max-width: 1440px) {
-  .container {
-    width: 1400px;
+/* @media screen and (max-width: 1440px) {
+  .sticky-container {
+    width: 1440px;
+    position: sticky;
+    left: 0;
   }
-}
+} */
 </style>
