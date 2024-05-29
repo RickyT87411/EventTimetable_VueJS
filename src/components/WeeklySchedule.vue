@@ -31,7 +31,7 @@
             >
               <h4
                 v-if="getActivity(day, time)"
-                class="m-auto text-left text-sm p-1 custom-width"
+                class="m-auto text-left text-sm p-1 custom-width flex items-center"
                 :style="getEventStyle(getActivity(day, time), day, time)"
               >
                 {{ getActivity(day, time).name }}
