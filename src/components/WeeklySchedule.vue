@@ -123,6 +123,14 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
+      {
+        name: "Test Activity",
+        color: "#FFFFFF",
+        times: [
+          { day: "Sunday", startTime: 9.5, endTime: 11 },
+          { day: "Monday", startTime: 9.5, endTime: 10.5 },
+        ],
+      },
     ];
 
     const generateTimeSlots = (activities) => {
@@ -173,7 +181,11 @@ export default defineComponent({
             (endIndex - (startIndex + 1) + (startTime % 1)) * 4 + 1
           }rem`;
         }
-      } else {
+      } else if (Number.isInteger(startTime) !== true) {
+        height = `${(duration * 4) + 1}rem`
+      } 
+      
+      else {
         height = `${duration * 4}rem`;
       }
 
