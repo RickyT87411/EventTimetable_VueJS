@@ -1,0 +1,185 @@
+[
+	{
+	  "name": "Sunrise Yoga",
+	  "color": "#E5DCCA",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "7AM",
+		  "endTime": "7:30AM"
+		},
+		{
+		  "day": "Wednesday",
+		  "startTime": "7AM",
+		  "endTime": "7:30AM"
+		},
+		{
+		  "day": "Friday",
+		  "startTime": "7AM",
+		  "endTime": "7:30AM"
+		},
+		{
+		  "day": "Sunday",
+		  "startTime": "7AM",
+		  "endTime": "7:30AM"
+		}
+	  ]
+	},
+	{
+	  "name": "Morning Yoga",
+	  "color": "#E0E5D2",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		},
+		{
+		  "day": "Tuesday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		},
+		{
+		  "day": "Wednesday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		},
+		{
+		  "day": "Thursday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		},
+		{
+		  "day": "Friday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		},
+		{
+		  "day": "Sunday",
+		  "startTime": "9AM",
+		  "endTime": "10AM"
+		}
+	  ]
+	},
+	{
+	  "name": "Aqua Stretching",
+	  "color": "#EDD2A0",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "10AM",
+		  "endTime": "10:45AM"
+		},
+		{
+		  "day": "Friday",
+		  "startTime": "10AM",
+		  "endTime": "10:45AM"
+		}
+	  ]
+	},
+	{
+	  "name": "Balinese Offerings",
+	  "color": "#E5D0A7CE",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "11AM",
+		  "endTime": "2PM"
+		},
+		{
+		  "day": "Tuesday",
+		  "startTime": "11AM",
+		  "endTime": "2PM"
+		},
+		{
+		  "day": "Wednesday",
+		  "startTime": "11AM",
+		  "endTime": "2PM"
+		},
+		{
+		  "day": "Friday",
+		  "startTime": "11AM",
+		  "endTime": "2PM"
+		}
+	  ]
+	},
+	{
+	  "name": "Sound Healing",
+	  "color": "#CED5CE",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "2PM",
+		  "endTime": "3:12PM"
+		},
+		{
+		  "day": "Tuesday",
+		  "startTime": "2PM",
+		  "endTime": "3:12PM"
+		},
+		{
+		  "day": "Wednesday",
+		  "startTime": "2PM",
+		  "endTime": "3:12PM"
+		},
+		{
+		  "day": "Thursday",
+		  "startTime": "2PM",
+		  "endTime": "3:12PM"
+		},
+		{
+		  "day": "Friday",
+		  "startTime": "2PM",
+		  "endTime": "3:12PM"
+		}
+	  ]
+	},
+	{
+	  "name": "Sunset Yoga",
+	  "color": "#E3E5CD",
+	  "times": [
+		{
+		  "day": "Monday",
+		  "startTime": "6PM",
+		  "endTime": "7PM"
+		},
+		{
+		  "day": "Tuesday",
+		  "startTime": "6PM",
+		  "endTime": "7PM"
+		},
+		{
+		  "day": "Thursday",
+		  "startTime": "6PM",
+		  "endTime": "7PM"
+		},
+		{
+		  "day": "Saturday",
+		  "startTime": "6PM",
+		  "endTime": "7PM"
+		}
+	  ]
+	},
+	{
+	  "name": "Alu Trekking",
+	  "color": "#C2C9AB",
+	  "times": [
+		{
+		  "day": "Tuesday",
+		  "startTime": "10AM",
+		  "endTime": "2PM"
+		},
+		{
+		  "day": "Thursday",
+		  "startTime": "10AM",
+		  "endTime": "2PM"
+		},
+		{
+		  "day": "Saturday",
+		  "startTime": "10AM",
+		  "endTime": "2PM"
+		}
+	  ]
+	}
+  ]
+  
