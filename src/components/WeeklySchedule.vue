@@ -132,6 +132,15 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
+      {
+        name: "Test Activity",
+        color: "#FFFFFF",
+        times: [
+          { day: "Sunday", startTime: 9.5, endTime: 14 },
+          { day: "Monday", startTime: 8.5, endTime: 10 },
+          { day: "Friday", startTime: 9.5, endTime: 10.5 },
+        ],
+      },
     ];
 
     const generateTimeSlots = (activities) => {
@@ -152,7 +161,6 @@ export default defineComponent({
 
       // Check if the last endTime isn't a float number and is the largest number among time slots in a day
       const lastEndTime = timeSlotsArray[timeSlotsArray.length - 1];
-      console.log("last end time", lastEndTime);
       if (
         Number.isInteger(lastEndTime) === true &&
         lastEndTime === Math.max(...timeSlotsArray)
@@ -194,9 +202,6 @@ export default defineComponent({
         // If activity duration is greater than or equal to 2 hours
         const startIndex = timeSlots.indexOf(Math.floor(startTime));
         const endIndex = timeSlots.indexOf(Math.floor(endTime));
-
-        console.log("start", startIndex);
-        console.log("end", endIndex);
 
         if (Number.isInteger(startTime) === true) {
           height = `${
@@ -306,8 +311,8 @@ export default defineComponent({
 
 .custom-width {
   z-index: 9;
+  
 }
-
 .sticky-container {
   position: sticky;
   left: 0;
