@@ -132,16 +132,16 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
-      // {
-      //   name: "Test Activity",
-      //   color: "#FFFFFF",
-      //   times: [
-      //     { day: "Sunday", startTime: 9.5, endTime: 15 },
-      //     { day: "Monday", startTime: 8.5, endTime: 10 },
-      //     { day: "Friday", startTime: 9.5, endTime: 10.5 },
-      //     { day: "Monday", startTime: 11.25, endTime: 16 },
-      //   ],
-      // },
+      {
+        name: "Test Activity",
+        color: "#FFFFFF",
+        times: [
+          { day: "Sunday", startTime: 9.5, endTime: 15 },
+          { day: "Monday", startTime: 8.5, endTime: 10 },
+          { day: "Friday", startTime: 9.5, endTime: 10.5 },
+          { day: "Monday", startTime: 14.65, endTime: 16.4},
+        ],
+      },
     ];
 
     const generateTimeSlots = (activities) => {
@@ -212,7 +212,8 @@ export default defineComponent({
           Number.isInteger(startTime) !== true &&
           Number.isInteger(endTime) !== true
         ) {
-          height = `${(endIndex - startIndex) * 4 + (endTime % 1) * 4 + 1}rem`;
+
+          height = `${(endIndex - startIndex) * 4 + (endTime % 1) * 4 }rem`;
         } 
         else if(startTime % 1 < 0.5) {
           height = `${duration * 4 + 2}rem`;
@@ -229,7 +230,12 @@ export default defineComponent({
           }rem`;
         }
       } else if (Number.isInteger(startTime) !== true && duration >= 1) {
-        height = `${duration * 4 + 1}rem`; // For activities less than 2 hours with non-integer start time
+
+        if(((endTime % 1) >= 0.5) || (0 < (endTime % 1) < 0.5)) {
+          height = `${duration * 4 + 1}rem`;
+          } else if(endTime % 1 < 0.5){
+            height = `${duration * 4 + 2}rem`;
+          }
       } else if ((Number.isInteger(endTime) !== true)) {
         height = `${duration * 4 + 0.5}rem`; // For activities less than 2 hours with non-integer end time
       } else if (duration <= 0) {
