@@ -132,16 +132,16 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
-      {
-        name: "Test Activity",
-        color: "#FFFFFF",
-        times: [
-          { day: "Sunday", startTime: 9.5, endTime: 15 },
-          { day: "Monday", startTime: 8.5, endTime: 10 },
-          { day: "Friday", startTime: 9.5, endTime: 10.5 },
-          { day: "Monday", startTime: 14.65, endTime: 16.4},
-        ],
-      },
+      // {
+      //   name: "Test Activity",
+      //   color: "#FFFFFF",
+      //   times: [
+      //     { day: "Sunday", startTime: 9.5, endTime: 15 },
+      //     { day: "Monday", startTime: 8.5, endTime: 10 },
+      //     { day: "Friday", startTime: 9.5, endTime: 10.5 },
+      //     { day: "Monday", startTime: 14.65, endTime: 16.4},
+      //   ],
+      // },
     ];
 
     const generateTimeSlots = (activities) => {
