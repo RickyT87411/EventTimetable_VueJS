@@ -132,15 +132,16 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
-      {
-        name: "Test Activity",
-        color: "#FFFFFF",
-        times: [
-          { day: "Sunday", startTime: 9.5, endTime: 14 },
-          { day: "Monday", startTime: 8.5, endTime: 10 },
-          { day: "Friday", startTime: 9.5, endTime: 10.5 },
-        ],
-      },
+      // {
+      //   name: "Test Activity",
+      //   color: "#FFFFFF",
+      //   times: [
+      //     { day: "Sunday", startTime: 9.5, endTime: 15 },
+      //     { day: "Monday", startTime: 8.5, endTime: 10 },
+      //     { day: "Friday", startTime: 9.5, endTime: 10.5 },
+      //     { day: "Monday", startTime: 11.25, endTime: 16 },
+      //   ],
+      // },
     ];
 
     const generateTimeSlots = (activities) => {
@@ -207,19 +208,34 @@ export default defineComponent({
           height = `${
             (endIndex - startIndex) * 4 + (endIndex - startIndex - 1)
           }rem`;
-        } else {
+        } else if (
+          Number.isInteger(startTime) !== true &&
+          Number.isInteger(endTime) !== true
+        ) {
+          height = `${(endIndex - startIndex) * 4 + (endTime % 1) * 4 + 1}rem`;
+        } 
+        else if(startTime % 1 < 0.5) {
+          height = `${duration * 4 + 2}rem`;
+        } else if(startTime % 1 > 0.5) {
+          height = `${
+            (endIndex - (startIndex + 1) + (startTime % 1)) * 4 +
+            (endIndex - startIndex - 2)
+          }rem`
+        } 
+        else {
           height = `${
             (endIndex - (startIndex + 1) + (startTime % 1)) * 4 +
             (endIndex - startIndex - 1)
           }rem`;
         }
-      } else if (Number.isInteger(startTime) !== true) {
+      } else if (Number.isInteger(startTime) !== true && duration >= 1) {
         height = `${duration * 4 + 1}rem`; // For activities less than 2 hours with non-integer start time
-      } else if (Number.isInteger(endTime) !== true) {
+      } else if ((Number.isInteger(endTime) !== true)) {
         height = `${duration * 4 + 0.5}rem`; // For activities less than 2 hours with non-integer end time
       } else if (duration <= 0) {
         height = 0; // For activities with zero or negative duration
-      } else {
+      }
+      else {
         height = `${duration * 4}rem`; // For activities with integer duration less than 2 hours
       }
 
@@ -311,7 +327,6 @@ export default defineComponent({
 
 .custom-width {
   z-index: 9;
-  
 }
 .sticky-container {
   position: sticky;
@@ -347,8 +362,9 @@ export default defineComponent({
   border-bottom: 1px solid rgba(173, 140, 72, 0.5);
 }
 
-.schedule-grid > .grid-row:last-child .activity-cell, .schedule-grid > .grid-row:last-child .time-slot {
-    border-bottom: none;
+.schedule-grid > .grid-row:last-child .activity-cell,
+.schedule-grid > .grid-row:last-child .time-slot {
+  border-bottom: none;
 }
 
 .grid-row {
