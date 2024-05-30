@@ -1,16 +1,22 @@
 <template>
   <div class="mx-auto text-center p-4">
     <div class="sticky-container">
+      <!-- Title -->
       <h1 class="text-3xl font-semibold mb-4">Weekly Schedule</h1>
+      <!-- Disclaimer -->
       <p class="text-sm text-gray-500 mb-2">
         *All included for in-house guests.
       </p>
+      <!-- Additional Information -->
       <p class="text-lg mb-16">Advanced booking is required.</p>
+      <!-- Schedule Grid -->
       <div class="overflow-x-auto">
         <div class="schedule-grid">
+          <!-- Time Slots -->
           <div
             class="p-6 border border-gray-300 border-x-0 border-t-0 time-slot"
           ></div>
+          <!-- Days -->
           <div
             v-for="day in days"
             :key="day"
@@ -18,23 +24,26 @@
           >
             {{ day }}
           </div>
+          <!-- Activities for Each Day -->
           <div v-for="time in timeSlots" :key="time" class="grid-row">
             <div
               class="pt-8 border border-gray-300 time-slot border-x-0 border-t-0 align-middle opacity-100"
             >
               {{ formatTime(time) }}
             </div>
+            <!-- Display Activities -->
             <div
               v-for="day in days"
               :key="day + time"
               class="relative p-2 h-20 border border-gray-300 border-r-0 border-b-0"
             >
               <h4
-                v-if="getActivity(day, time)"
+                v-for="activity in getActivities(day, time)"
+                :key="activity.name"
                 class="m-auto text-left text-sm p-1 custom-width flex items-center"
-                :style="getEventStyle(getActivity(day, time), day, time)"
+                :style="getEventStyle(activity, day, time)"
               >
-                {{ getActivity(day, time).name }}
+                {{ activity.name }}
               </h4>
             </div>
           </div>
@@ -123,14 +132,6 @@ export default defineComponent({
           { day: "Saturday", startTime: 10.5, endTime: 14 },
         ],
       },
-      {
-        name: "Test Activity",
-        color: "#FFFFFF",
-        times: [
-          { day: "Sunday", startTime: 9.5, endTime: 11 },
-          { day: "Monday", startTime: 9.5, endTime: 10.5 },
-        ],
-      },
     ];
 
     const generateTimeSlots = (activities) => {
@@ -138,12 +139,29 @@ export default defineComponent({
       activities.forEach((activity) => {
         activity.times.forEach((time) => {
           timeSlotSet.add(Math.floor(time.startTime));
-          if (time.endTime - time.startTime > 1) {
+          // Check if the duration is greater than or equal to 1
+          if (time.endTime - time.startTime >= 1) {
+            // If the duration is at least 1 hour, add the endTime to the timeSlotSet
             timeSlotSet.add(Math.floor(time.endTime));
           }
         });
       });
-      return Array.from(timeSlotSet).sort((a, b) => a - b);
+
+      // Convert the Set to an array and sort it
+      const timeSlotsArray = Array.from(timeSlotSet).sort((a, b) => a - b);
+
+      // Check if the last endTime isn't a float number and is the largest number among time slots in a day
+      const lastEndTime = timeSlotsArray[timeSlotsArray.length - 1];
+      console.log("last end time", lastEndTime);
+      if (
+        Number.isInteger(lastEndTime) === true &&
+        lastEndTime === Math.max(...timeSlotsArray)
+      ) {
+        // Remove the last endTime from the array
+        timeSlotsArray.pop();
+      }
+
+      return timeSlotsArray;
     };
 
     const data = {
@@ -159,46 +177,58 @@ export default defineComponent({
       timeSlots: generateTimeSlots(activities),
     };
 
-    const getActivity = (day, time) => {
-      return activities.find((activity) =>
+    // Function to filter activities for a specific day and time
+    const getActivities = (day, time) => {
+      return activities.filter((activity) =>
         activity.times.some(
           (slot) => slot.day === day && Math.floor(slot.startTime) === time
         )
       );
     };
 
+    // Function to calculate height and position of activities
     const calculateHeightAndPosition = (startTime, endTime, timeSlots) => {
       const duration = endTime - startTime;
       let height;
       if (duration >= 2) {
+        // If activity duration is greater than or equal to 2 hours
         const startIndex = timeSlots.indexOf(Math.floor(startTime));
         const endIndex = timeSlots.indexOf(Math.floor(endTime));
 
+        console.log("start", startIndex);
+        console.log("end", endIndex);
+
         if (Number.isInteger(startTime) === true) {
-          height = `${(endIndex - startIndex) * 4}rem`;
+          height = `${
+            (endIndex - startIndex) * 4 + (endIndex - startIndex - 1)
+          }rem`;
         } else {
           height = `${
-            (endIndex - (startIndex + 1) + (startTime % 1)) * 4 + 1
+            (endIndex - (startIndex + 1) + (startTime % 1)) * 4 +
+            (endIndex - startIndex - 1)
           }rem`;
         }
       } else if (Number.isInteger(startTime) !== true) {
-        height = `${(duration * 4) + 1}rem`
-      } 
-      
-      else {
-        height = `${duration * 4}rem`;
+        height = `${duration * 4 + 1}rem`; // For activities less than 2 hours with non-integer start time
+      } else if (Number.isInteger(endTime) !== true) {
+        height = `${duration * 4 + 0.5}rem`; // For activities less than 2 hours with non-integer end time
+      } else if (duration <= 0) {
+        height = 0; // For activities with zero or negative duration
+      } else {
+        height = `${duration * 4}rem`; // For activities with integer duration less than 2 hours
       }
 
       let startPos;
       if (Number.isInteger(startTime) !== true) {
-        startPos = (startTime - parseInt(startTime)) * 4;
+        startPos = (startTime - parseInt(startTime)) * 4; // Start position for non-integer start time
       } else {
-        startPos = (startTime % 1) * 4;
+        startPos = (startTime % 1) * 4; // Start position for integer start time
       }
 
       return { height, marginTop: `${startPos}rem` };
     };
 
+    // Function to style events based on their timing and duration
     const getEventStyle = (activity, day, time) => {
       const activityTime = activity.times.find(
         (slot) => slot.day === day && Math.floor(slot.startTime) === time
@@ -212,10 +242,12 @@ export default defineComponent({
         );
 
         const overlappingActivities = activities
-          .filter((a) =>
-            a.times.some(
-              (t) =>
-                t.day === day && t.startTime < endTime && t.endTime > startTime
+          .filter((overlapping) =>
+            overlapping.times.some(
+              (event) =>
+                event.day === day &&
+                ((event.startTime < endTime && event.endTime > startTime) ||
+                  event.startTime === startTime)
             )
           )
           .sort(
@@ -226,7 +258,7 @@ export default defineComponent({
 
         const totalActivities = overlappingActivities.length;
         const index = overlappingActivities.findIndex(
-          (a) => a.name === activity.name
+          (overlapping) => overlapping.name === activity.name
         );
 
         let width = "90%";
@@ -250,16 +282,18 @@ export default defineComponent({
       return {};
     };
 
+    // Function to format time display
     const formatTime = (time) => {
       const hour = Math.floor(time);
-      const suffix = hour >= 12 ? "PM" : "AM";
-      const formattedHour = hour % 12 || 12;
+      const suffix = hour >= 12 ? "PM" : "AM"; // Determine AM or PM
+      const formattedHour = hour % 12 || 12; // Convert 24-hour format to 12-hour format
       return `${formattedHour} ${suffix}`;
     };
 
+    // Return data and functions to be used in component
     return {
       ...data,
-      getActivity,
+      getActivities,
       getEventStyle,
       formatTime,
     };
@@ -268,6 +302,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* Scoped styles for component */
+
 .custom-width {
   z-index: 9;
 }
@@ -287,10 +323,7 @@ export default defineComponent({
   width: 1440px;
 }
 
-.schedule-grid > .grid-row:last-child .activity-cell,
-.schedule-grid > .grid-row:last-child .time-slot {
-  border-bottom: none;
-}
+/* Additional styling for schedule grid */
 
 .time-slot {
   letter-spacing: 0.7px;
@@ -307,6 +340,10 @@ export default defineComponent({
   color: #ad8c48;
   background-color: #efebe2;
   border-bottom: 1px solid rgba(173, 140, 72, 0.5);
+}
+
+.schedule-grid > .grid-row:last-child .activity-cell, .schedule-grid > .grid-row:last-child .time-slot {
+    border-bottom: none;
 }
 
 .grid-row {
